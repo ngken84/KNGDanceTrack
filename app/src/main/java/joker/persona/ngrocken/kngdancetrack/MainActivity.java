@@ -1,11 +1,10 @@
 package joker.persona.ngrocken.kngdancetrack;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class MainActivity extends AppCompatActivity {
+import joker.persona.ngrocken.kngdancetrack.util.ActivityTemplate;
+
+public class MainActivity extends ActivityTemplate {
 
     private HomeFragment homeFragment;
 
@@ -16,15 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
         homeFragment = new HomeFragment();
 
-        showFragment(homeFragment);
+        showFragment(R.id.main_fragment_container, homeFragment);
     }
 
-    private void showFragment(Fragment fragment) {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if(fragment.isAdded()) {
-            return;
-        }
-        transaction.replace(R.id.main_fragment_container, fragment);
-        transaction.commit();
-    }
+
 }

@@ -3,9 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button android:id="@+id/f_h_danceNavBtn"
+    <TextView android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Go to dance"/>
+        android:text="akldsfja"/>
 
 </LinearLayout>
