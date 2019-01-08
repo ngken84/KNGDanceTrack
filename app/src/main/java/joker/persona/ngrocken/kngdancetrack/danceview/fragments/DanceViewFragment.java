@@ -1,4 +1,4 @@
-package joker.persona.ngrocken.kngdancetrack;
+package joker.persona.ngrocken.kngdancetrack.danceview.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import joker.persona.ngrocken.kngdancetrack.R;
 
 public class DanceViewFragment extends Fragment {
 

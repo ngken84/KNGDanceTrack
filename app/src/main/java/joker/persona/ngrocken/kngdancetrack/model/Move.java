@@ -6,8 +6,12 @@ import java.util.List;
 
 public class Move extends DanceConcept {
 
-    public Move(String id, String name, String dance, Date dateCreated, String description,
-                int count, int rating, int difficulty, String location) {
+    public Move(String id, String name, String dance, Date dateCreated, String description) {
+        super(id, name, dance, dateCreated);
+        this.description = description;
+    }
+
+    public Move(String id, String name, String dance, Date dateCreated, String description, int count, int rating, int difficulty, String location) {
         super(id, name, dance, dateCreated);
         this.description = description;
         this.count = count;

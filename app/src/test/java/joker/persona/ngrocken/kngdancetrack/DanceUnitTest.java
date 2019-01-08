@@ -10,9 +10,10 @@ public class DanceUnitTest {
 
     @Test
     public void constructor_works() {
-        Dance dance = new Dance("Waltz", "Ballroom");
+        Dance dance = new Dance("1","Waltz", "Ballroom");
         assertEquals(dance.getName(), "Waltz");
         assertEquals(dance.getCategory(), "Ballroom");
     }
+
 
 }
