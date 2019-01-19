@@ -20,6 +20,10 @@ public abstract class DanceConcept {
         this.dateCreated = dateCreated;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }

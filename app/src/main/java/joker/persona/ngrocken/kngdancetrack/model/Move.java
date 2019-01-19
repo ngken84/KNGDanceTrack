@@ -35,6 +35,10 @@ public class Move extends DanceConcept {
         return count;
     }
 
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
     public int getRating() {
         return rating;
     }

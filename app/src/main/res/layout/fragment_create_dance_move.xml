@@ -9,13 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Create a dance move"
-        />
+        android:textSize="24dp"
+        android:layout_marginBottom="10dp"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"/>
 
     <EditText
+        android:id="@+id/fcdm_name_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"/>
@@ -26,15 +28,34 @@
         android:text="Description"/>
 
     <EditText
+        android:id="@+id/fcdm_description_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textMultiLine"
         android:hint="description"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rating"/>
+
+    <RatingBar
+        android:id="@+id/fcdm_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:numStars="5"
+        android:stepSize="0.5"
+        android:rating="2.5"/>
+
     <Button
+        android:id="@+id/fcdm_create_btn"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Create Move"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
