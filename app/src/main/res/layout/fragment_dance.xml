@@ -13,4 +13,9 @@
         android:layout_height="wrap_content"
         android:text="Go To Dance Moves"/>
 
+    <Button android:id="@+id/fd_createDanceBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Dance"/>
+
 </LinearLayout>

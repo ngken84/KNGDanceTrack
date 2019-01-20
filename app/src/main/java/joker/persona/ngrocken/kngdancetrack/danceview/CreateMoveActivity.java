@@ -18,7 +18,7 @@ public class CreateMoveActivity extends ActivityTemplate {
         setContentView(R.layout.activity_create_dance_move);
 
         createMoveFragment = new CreateMoveFragment();
-        showFragment(R.id.create_dance_fragment_container, createMoveFragment);
+        showFragment(R.id.create_dance_move_fragment_container, createMoveFragment);
 
     }
 }

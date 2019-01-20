@@ -11,12 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import joker.persona.ngrocken.kngdancetrack.R;
+import joker.persona.ngrocken.kngdancetrack.danceview.CreateDanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.DanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
 
 public class DanceViewFragment extends Fragment implements View.OnClickListener {
 
     private Button goToMoveButton;
+    private Button createDanceButton;
 
     @Nullable
     @Override
@@ -25,6 +27,9 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener 
 
         goToMoveButton = view.findViewById(R.id.fd_goToMovesBtn);
         goToMoveButton.setOnClickListener(this);
+
+        createDanceButton = view.findViewById(R.id.fd_createDanceBtn);
+        createDanceButton.setOnClickListener(this);
 
         return view;
     }
@@ -35,6 +40,10 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener 
             case R.id.fd_goToMovesBtn:
                 Intent intent = new Intent(getContext(), MoveActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.fd_createDanceBtn:
+                Intent intent1 = new Intent(getContext(), CreateDanceActivity.class);
+                startActivity(intent1);
                 break;
         }
     }
