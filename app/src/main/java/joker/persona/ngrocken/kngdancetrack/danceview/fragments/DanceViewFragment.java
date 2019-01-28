@@ -1,24 +1,48 @@
 package joker.persona.ngrocken.kngdancetrack.danceview.fragments;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v4.util.Consumer;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+
+import java.util.List;
 
 import joker.persona.ngrocken.kngdancetrack.R;
+import joker.persona.ngrocken.kngdancetrack.adapters.DanceArrayAdapter;
 import joker.persona.ngrocken.kngdancetrack.danceview.CreateDanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.DanceActivity;
+import joker.persona.ngrocken.kngdancetrack.danceview.IndividualDanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
+import joker.persona.ngrocken.kngdancetrack.database.DanceDBTasks;
+import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceContract;
+import joker.persona.ngrocken.kngdancetrack.model.Dance;
 
-public class DanceViewFragment extends Fragment implements View.OnClickListener {
+public class DanceViewFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
     private Button goToMoveButton;
     private Button createDanceButton;
+    private ListView danceListView;
+
+    DanceArrayAdapter mAdapter;
 
     @Nullable
     @Override
@@ -31,6 +55,24 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener 
         createDanceButton = view.findViewById(R.id.fd_createDanceBtn);
         createDanceButton.setOnClickListener(this);
 
+        danceListView = view.findViewById(R.id.fd_danceListView);
+
+        ProgressBar progressBar = new ProgressBar(getContext());
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+
+        progressBar.setIndeterminate(true);
+        danceListView.setEmptyView(progressBar);
+
+        danceListView.setOnItemClickListener(this);
+
+        DanceDBTasks.getAllDances(getContext(), new Consumer<List<Dance>>() {
+            @Override
+            public void accept(List<Dance> dances) {
+                mAdapter = new DanceArrayAdapter(getContext(), android.R.layout.simple_list_item_1, dances);
+                danceListView.setAdapter(mAdapter);
+            }
+        });
         return view;
     }
 
@@ -43,8 +85,24 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.fd_createDanceBtn:
                 Intent intent1 = new Intent(getContext(), CreateDanceActivity.class);
-                startActivity(intent1);
+                getActivity().startActivityForResult(intent1, CreateDanceActivity.CREATE_DANCE);
                 break;
         }
     }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Dance dance = mAdapter.getItem(i);
+        Intent intent = new Intent(getContext(), IndividualDanceActivity.class);
+        intent.putExtra("danceId", dance.getId());
+        startActivity(intent);
+    }
+
+
+    public void addDance(Dance dance) {
+        mAdapter.add(dance);
+    }
+
+
 }

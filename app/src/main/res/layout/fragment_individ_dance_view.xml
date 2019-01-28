@@ -1,39 +1,38 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button android:id="@+id/fd_createDanceBtn"
+    <Button android:id="@+id/fidv_createDanceMove"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Dance"
+        android:text="Create Move"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"/>
 
-    <Button android:id="@+id/fd_goToMovesBtn"
+    <Button android:id="@+id/fidv_createDrill"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Go To Dance Moves"
+        android:text="Create Drill"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:layout_above="@id/fd_createDanceBtn"/>
+        android:layout_above="@id/fidv_createDanceMove"/>
+
+    <Button android:id="@+id/fidv_createTask"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Task"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_above="@id/fidv_createDrill"/>
 
     <ListView
-        android:id="@+id/fd_danceListView"
+        android:id="@+id/fidv_danceListView"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_height="fill_parent"
-        android:layout_alignBottom="@id/fd_goToMovesBtn">
-
+        android:layout_alignBottom="@id/fidv_createTask">
     </ListView>
-
-
-
-
-
-
-
 </RelativeLayout>

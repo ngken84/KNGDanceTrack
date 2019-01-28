@@ -20,6 +20,7 @@
         <activity android:name=".danceview.MoveActivity"></activity>
         <activity android:name=".danceview.CreateMoveActivity"></activity>
         <activity android:name=".danceview.CreateDanceActivity"></activity>
+        <activity android:name=".danceview.IndividualDanceActivity"></activity>
     </application>
 
 </manifest>

@@ -10,6 +10,7 @@ import joker.persona.ngrocken.kngdancetrack.util.ActivityTemplate;
 public class CreateDanceActivity extends ActivityTemplate {
 
     private CreateDanceFragment createDanceFragment;
+    public static final int CREATE_DANCE = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
