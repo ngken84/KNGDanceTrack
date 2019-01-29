@@ -1,26 +1,23 @@
 package joker.persona.ngrocken.kngdancetrack.model;
 
 
-public class Dance {
+import java.util.Date;
 
-    private long id;
-    private String name;
+public class Dance extends DanceObject {
+
     private String category;
     private String description;
 
-    public Dance(long id, String name, String category, String description) {
-        this.id = id;
-        this.name = name;
+    public Dance(long id, String name, String category, String description, Date dateCreated) {
+        super(id, name, dateCreated);
         this.category = category;
         this.description = description;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
+    public Dance(long id, String name, String category, String description, int dateCreated) {
+        super(id, name, new Date());
+        this.category = category;
+        this.description = description;
     }
 
     public String getCategory() {

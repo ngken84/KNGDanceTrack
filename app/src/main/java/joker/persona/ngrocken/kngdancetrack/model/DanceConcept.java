@@ -4,48 +4,18 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class DanceConcept {
+public abstract class DanceConcept extends DanceObject{
 
-    private String id;
-    private String name;
     private String dance;
-    private boolean starred;
-    private Date dateCreated;
     private List<String> tagList = new LinkedList<>();
 
-    public DanceConcept(String id, String name, String dance, Date dateCreated) {
-        this.id = id;
-        this.name = name;
+    public DanceConcept(long id, String name, String dance, Date dateCreated) {
+        super(id, name, dateCreated);
         this.dance = dance;
-        this.dateCreated = dateCreated;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getDance() {
         return dance;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public Date getDateCreated() {
-        return dateCreated;
-    }
-
-    public boolean isStarred() {
-        return starred;
-    }
-
-    public void setStarred(boolean starred) {
-        this.starred = starred;
     }
 
     public void addTag(Tag tag) {

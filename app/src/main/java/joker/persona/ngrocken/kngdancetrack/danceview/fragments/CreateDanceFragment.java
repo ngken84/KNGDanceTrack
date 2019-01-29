@@ -74,7 +74,7 @@ public class CreateDanceFragment extends Fragment implements View.OnClickListene
 
         String description = descriptionEdit.getText().toString();
 
-        Dance newDance = new Dance(0, name, category, description);
+        Dance newDance = new Dance(0, name, category, description, 0);
 
         final CreateDanceFragment fragment = this;
 

@@ -44,6 +44,7 @@ public class DanceDBTasks {
                 DanceSQLHelper helper = new DanceSQLHelper(getContext());
                 SQLiteDatabase db = helper.getReadableDatabase();
 
+
                 String[] projection = DanceContract.getProjection();
 
                 String sortOrder = DanceContract.COLUMN_NAME_NAME + " ASC";
@@ -62,7 +63,7 @@ public class DanceDBTasks {
                     String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_NAME));
                     String category = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_CATEGORY));
                     String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DESCRIPTION));
-                    Dance dance = new Dance(id, name, category, description);
+                    Dance dance = new Dance(id, name, category, description,  0);
                     retList.add(dance);
                 }
                 db.close();
@@ -121,6 +122,9 @@ public class DanceDBTasks {
                     values.put(DanceContract.COLUMN_NAME_NAME, dance.getName());
                     values.put(DanceContract.COLUMN_NAME_CATEGORY, dance.getCategory());
                     values.put(DanceContract.COLUMN_NAME_DESCRIPTION, dance.getDescription());
+                    values.put(DanceContract.COLUMN_NAME_STARRED, 0);
+                    values.put(DanceContract.COLUMN_NAME_TAGS, "");
+                    values.put(DanceContract.COLUMN_NAME_DATE_CREATED, 0);
                     rowId = db.insert(DanceContract.TABLE_NAME, null, values);
 
                 }
@@ -166,7 +170,7 @@ public class DanceDBTasks {
                     String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_NAME));
                     String category = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_CATEGORY));
                     String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DESCRIPTION));
-                    dance = new Dance(id, name, category, description);
+                    dance = new Dance(id, name, category, description, 0);
                 }
                 db.close();
                 return dance;

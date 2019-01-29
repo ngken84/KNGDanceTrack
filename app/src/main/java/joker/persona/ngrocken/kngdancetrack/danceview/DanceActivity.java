@@ -25,7 +25,7 @@ public class DanceActivity extends ActivityTemplate {
         danceViewFragment = new DanceViewFragment();
         showFragment(R.id.dance_fragment_container, danceViewFragment);
 
-
+        this.getWindow().setTitle("Your Dances");
 
 
     }
