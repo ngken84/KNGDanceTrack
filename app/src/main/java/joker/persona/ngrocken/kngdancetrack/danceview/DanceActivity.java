@@ -11,6 +11,7 @@ import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.database.DanceDBTasks;
 import joker.persona.ngrocken.kngdancetrack.model.Dance;
 import joker.persona.ngrocken.kngdancetrack.util.ActivityTemplate;
+import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
 public class DanceActivity extends ActivityTemplate {
 
@@ -25,8 +26,6 @@ public class DanceActivity extends ActivityTemplate {
         danceViewFragment = new DanceViewFragment();
         showFragment(R.id.dance_fragment_container, danceViewFragment);
 
-        this.getWindow().setTitle("Your Dances");
-
 
     }
 
@@ -34,13 +33,23 @@ public class DanceActivity extends ActivityTemplate {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch(requestCode) {
             case CreateDanceActivity.CREATE_DANCE:
-                DanceDBTasks.getDanceById(this, new Consumer<Dance>() {
+                if(data != null) {
+                    long id = data.getLongExtra("id", 0);
+                    if (id != 0) {
+                        DanceDBTasks.getDanceById(this, new DanceConsumer<Dance>() {
 
-                    @Override
-                    public void accept(Dance dance) {
-                        danceViewFragment.addDance(dance);
+                            @Override
+                            public void consume(Dance dance) {
+                                danceViewFragment.addDance(dance);
+                            }
+
+                            @Override
+                            public void handleError() {
+
+                            }
+                        }, data.getLongExtra("id", 0));
                     }
-                }, data.getLongExtra("id", 0));
+                }
                 break;
         }
     }

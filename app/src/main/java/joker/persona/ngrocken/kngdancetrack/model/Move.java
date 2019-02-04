@@ -6,33 +6,37 @@ import java.util.List;
 
 public class Move extends DanceConcept {
 
-    public Move(long id, String name, String dance, Date dateCreated, String description) {
-        super(id, name, dance, dateCreated);
+    public Move(long id, String name, long danceId, String danceName, Date dateCreated, String description) {
+        super(id, name, danceId, danceName, dateCreated);
         this.description = description;
     }
 
-    public Move(long id, String name, String dance, Date dateCreated, String description, int count, int rating, int difficulty, String location) {
-        super(id, name, dance, dateCreated);
+    public Move(long id, String name, long danceId, String danceName, Date dateCreated, String description, int rating, int difficulty) {
+        super(id, name, danceId, danceName, dateCreated);
         this.description = description;
-        this.count = count;
         this.rating = rating;
         this.difficulty = difficulty;
-        this.location = location;
+    }
+
+    public Move(long id, String name, long danceId, String danceName, int dateCreated, String description) {
+        super(id, name, danceId, danceName, dateCreated);
+        this.description = description;
+    }
+
+    public Move(long id, String name, long danceId, String danceName, int dateCreated, String description, int rating, int difficulty) {
+        super(id, name, danceId, danceName, dateCreated);
+        this.description = description;
+        this.rating = rating;
+        this.difficulty = difficulty;
     }
 
     private String description;
-    private int count;
     private int rating;
     private int difficulty;
-    private String location;
     private List<MoveVariation> variations = new LinkedList<MoveVariation>();
 
     public String getDescription() {
         return description;
-    }
-
-    public int getCount() {
-        return count;
     }
 
     public void setRating(int rating) {
@@ -47,9 +51,6 @@ public class Move extends DanceConcept {
         return difficulty;
     }
 
-    public String getLocation() {
-        return location;
-    }
 }
 
 

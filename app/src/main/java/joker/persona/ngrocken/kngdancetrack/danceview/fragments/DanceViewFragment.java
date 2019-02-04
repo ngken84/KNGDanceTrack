@@ -35,10 +35,10 @@ import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
 import joker.persona.ngrocken.kngdancetrack.database.DanceDBTasks;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceContract;
 import joker.persona.ngrocken.kngdancetrack.model.Dance;
+import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
 public class DanceViewFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener {
 
-    private Button goToMoveButton;
     private Button createDanceButton;
     private ListView danceListView;
 
@@ -48,9 +48,6 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener,
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_dance, null);
-
-        goToMoveButton = view.findViewById(R.id.fd_goToMovesBtn);
-        goToMoveButton.setOnClickListener(this);
 
         createDanceButton = view.findViewById(R.id.fd_createDanceBtn);
         createDanceButton.setOnClickListener(this);
@@ -66,11 +63,16 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener,
 
         danceListView.setOnItemClickListener(this);
 
-        DanceDBTasks.getAllDances(getContext(), new Consumer<List<Dance>>() {
+        DanceDBTasks.getAllDances(getContext(), new DanceConsumer<List<Dance>>() {
             @Override
-            public void accept(List<Dance> dances) {
+            public void consume(List<Dance> dances) {
                 mAdapter = new DanceArrayAdapter(getContext(), android.R.layout.simple_list_item_1, dances);
                 danceListView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void handleError() {
+
             }
         });
         return view;
@@ -79,10 +81,6 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.fd_goToMovesBtn:
-                Intent intent = new Intent(getContext(), MoveActivity.class);
-                startActivity(intent);
-                break;
             case R.id.fd_createDanceBtn:
                 Intent intent1 = new Intent(getContext(), CreateDanceActivity.class);
                 getActivity().startActivityForResult(intent1, CreateDanceActivity.CREATE_DANCE);
@@ -94,8 +92,9 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Dance dance = mAdapter.getItem(i);
-        Intent intent = new Intent(getContext(), IndividualDanceActivity.class);
+        Intent intent = new Intent(getActivity(), IndividualDanceActivity.class);
         intent.putExtra("danceId", dance.getId());
+        Toast.makeText(getContext(), "ID " + dance.getId(), Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
 

@@ -6,16 +6,28 @@ import java.util.List;
 
 public abstract class DanceConcept extends DanceObject{
 
-    private String dance;
+    private long danceId;
+    private String danceName;
     private List<String> tagList = new LinkedList<>();
 
-    public DanceConcept(long id, String name, String dance, Date dateCreated) {
+    public DanceConcept(long id, String name, long dance, String danceName, Date dateCreated) {
         super(id, name, dateCreated);
-        this.dance = dance;
+        this.danceId = dance;
+        this.danceName = danceName;
     }
 
-    public String getDance() {
-        return dance;
+    public DanceConcept(long id, String name, long dance, String danceName, int dateCreated) {
+        super(id, name, dateCreated);
+        this.danceId = dance;
+        this.danceName = danceName;
+    }
+
+    public String getDanceName() {
+        return danceName;
+    }
+
+    public long getDanceId() {
+        return danceId;
     }
 
     public void addTag(Tag tag) {
@@ -40,6 +52,20 @@ public abstract class DanceConcept extends DanceObject{
         }
     }
 
+    public String getTagListString() {
+        StringBuilder sb = new StringBuilder();
+        for(String tag : tagList) {
+            sb.append(Tag.DELIMINATOR).append(tag).append(Tag.DELIMINATOR);
+        }
+        return sb.toString();
+    }
+
+    public void setTagListFromTagListString(String tagListString) {
+        String[] split = tagListString.split(Tag.DELIMINATOR);
+        for(String tag : split) {
+            addTag(tag);
+        }
+    }
 
 
 }

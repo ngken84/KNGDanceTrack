@@ -26,11 +26,10 @@
         android:layout_height="wrap_content"
         android:text="Category"/>
 
-    <EditText
-        android:id="@+id/fcd_category_edit"
+    <Spinner
+        android:id="@+id/fcd_category_spinner"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Category"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="match_parent"

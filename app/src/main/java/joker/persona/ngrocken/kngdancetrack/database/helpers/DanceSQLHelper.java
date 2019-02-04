@@ -4,8 +4,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import joker.persona.ngrocken.kngdancetrack.database.contracts.CategoryContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceMoveContract;
+import joker.persona.ngrocken.kngdancetrack.database.contracts.TagContract;
 
 public class DanceSQLHelper extends SQLiteOpenHelper {
 
@@ -20,6 +22,9 @@ public class DanceSQLHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(DanceContract.getCreateDanceDatabase());
         sqLiteDatabase.execSQL(DanceMoveContract.getCreateDatabaseString());
+        sqLiteDatabase.execSQL(CategoryContract.getCreateCategoryDatabase());
+        sqLiteDatabase.execSQL(TagContract.getCreateDatabaseString());
+
     }
 
     @Override
@@ -29,6 +34,12 @@ public class DanceSQLHelper extends SQLiteOpenHelper {
 
         sqLiteDatabase.execSQL(DanceMoveContract.getDeleteDatabaseString());
         sqLiteDatabase.execSQL(DanceMoveContract.getCreateDatabaseString());
+
+        sqLiteDatabase.execSQL(CategoryContract.getDeleteTableSQL());
+        sqLiteDatabase.execSQL(CategoryContract.getCreateCategoryDatabase());
+
+        sqLiteDatabase.execSQL(TagContract.createDeleteDatabaseString());
+        sqLiteDatabase.execSQL(TagContract.getCreateDatabaseString());
 
     }
 }

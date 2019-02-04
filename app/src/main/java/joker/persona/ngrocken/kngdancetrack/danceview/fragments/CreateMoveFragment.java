@@ -56,8 +56,5 @@ public class CreateMoveFragment extends Fragment implements View.OnClickListener
 
         String description = descEdtTxt.getText().toString();
         int rating = rtgBar.getNumStars();
-
-        Move newMove = new Move(0, moveName,"Test Dance", new Date(), description);
-        newMove.setRating(rating);
     }
 }

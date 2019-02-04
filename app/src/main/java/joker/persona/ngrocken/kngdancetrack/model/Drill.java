@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class Drill extends DanceConcept {
 
-    public Drill(long id, String name, String dance, Date dateCreated, int count, String description) {
-        super(id, name, dance, dateCreated);
+    public Drill(long id, String name, long danceId, String danceName, Date dateCreated, int count, String description) {
+        super(id, name, danceId, danceName, dateCreated);
         this.count = count;
         this.description = description;
     }
