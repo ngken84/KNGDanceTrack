@@ -17,6 +17,7 @@ import java.util.List;
 
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.adapters.DanceConceptAdapter;
+import joker.persona.ngrocken.kngdancetrack.danceview.CreateDrillActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.CreateMoveActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.IndividualDanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
@@ -29,6 +30,7 @@ import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 public class IndividualDanceViewFragment extends Fragment implements View.OnClickListener {
 
     public final static int CREATE_DANCE_MOVE_RESULT = 1;
+    public final static int CREATE_DRILL_RESULT = 2;
 
     private Button createDanceMoveBtn;
     private Button createDrillBtn;
@@ -54,7 +56,7 @@ public class IndividualDanceViewFragment extends Fragment implements View.OnClic
         danceListView.setAdapter(mAdapter);
 
         createDanceMoveBtn.setOnClickListener(this);
-
+        createDrillBtn.setOnClickListener(this);
         return view;
     }
 
@@ -76,6 +78,15 @@ public class IndividualDanceViewFragment extends Fragment implements View.OnClic
                     getActivity().startActivityForResult(intent, CREATE_DANCE_MOVE_RESULT);
                 }
                 break;
+            case R.id.fidv_createDrill:
+                if(dance != null) {
+                    Intent intent = new Intent(getContext(), CreateDrillActivity.class);
+                    intent.putExtra("danceId", dance.getId());
+                    intent.putExtra("danceName", dance.getName());
+                    getActivity().startActivityForResult(intent, CREATE_DRILL_RESULT);
+                }
+                break;
+
         }
     }
 

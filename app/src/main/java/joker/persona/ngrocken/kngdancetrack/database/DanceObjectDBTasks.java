@@ -9,7 +9,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceMoveContract;
+import joker.persona.ngrocken.kngdancetrack.database.contracts.DrillContract;
 import joker.persona.ngrocken.kngdancetrack.database.helpers.DanceSQLHelper;
+import joker.persona.ngrocken.kngdancetrack.model.Drill;
 import joker.persona.ngrocken.kngdancetrack.model.Move;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
@@ -17,6 +19,8 @@ public class DanceObjectDBTasks extends TaskTemplate {
 
     private DanceObjectDBTasks() {}
 
+
+    //DANCE MOVES
     public static void insertDanceMove(Context context, Move move, final DanceConsumer<Long> consumer) {
         class InsertDanceMoveTask extends MyAsyncTask<Move, Void, Long> {
 
@@ -207,5 +211,201 @@ public class DanceObjectDBTasks extends TaskTemplate {
         GetDanceMoveTask task = new GetDanceMoveTask(context);
         task.execute(danceMoveId);
     }
+
+    //DRILLS
+    public static void insertDrill(Context context, Drill drill, final DanceConsumer<Long> consumer) {
+        class InsertDrillTask extends MyAsyncTask<Drill, Void, Long> {
+
+            private InsertDrillTask(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected Long doInBackground(Drill... drills) {
+                if(drills == null || drills[0] == null) {
+                    consumer.setError(ERROR_NULL_VALUE_PASSED);
+                    return 0L;
+                }
+
+                Drill drill = drills[0];
+                if(drill.getName() != null && drill.getName().trim().equals("")) {
+                    consumer.setError(ERROR_NULL_NAME_VALUE_PASSED);
+                    return 0L;
+                }
+
+                drill.setName(drill.getName().trim());
+
+                DanceSQLHelper helper = new DanceSQLHelper(getContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
+
+                String[] projection = {DrillContract._ID};
+                String selection = DrillContract.COLUMN_NAME_NAME + " = ? AND " + DrillContract.DANCE_ID + " = ?";
+                String[] selectionArgs = {drill.getName(), Long.toString(drill.getDanceId())};
+
+                Cursor cursor = db.query(DrillContract.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        null);
+
+                if(cursor.moveToNext()) {
+                    consumer.setError(ERROR_INSERT_ALREADY_EXISTS);
+                    cursor.close();
+                    db.close();
+                    return 0L;
+                }
+                cursor.close();
+
+                ContentValues values = new ContentValues();
+                values.put(DrillContract.COLUMN_NAME_NAME, drill.getDanceName());
+                values.put(DrillContract.DANCE_ID, drill.getDanceId());
+                values.put(DrillContract.DANCE_NAME, drill.getDanceName());
+                values.put(DrillContract.COLUMN_NAME_DRILL, drill.getDrill());
+                values.put(DrillContract.COLUMN_NAME_DATE_CREATED, drill.getIntDateCreated());
+                values.put(DrillContract.COLUMN_NAME_STARRED, false);
+                values.put(DrillContract.COLUMN_NAME_IMPORTANCE, drill.getImportance());
+                values.put(DrillContract.COLUMN_NAME_DURATION, drill.getDuration());
+                values.put(DrillContract.COLUMN_NAME_TAGS, "");
+                values.put(DrillContract.COLUMN_NAME_COUNT, 0);
+
+                long rowId = db.insert(DrillContract.TABLE_NAME, null, values);
+                db.close();
+                return rowId;
+            }
+
+            @Override
+            protected void onPostExecute(Long aLong) {
+                consumer.consume(aLong);
+            }
+        }
+        InsertDrillTask task = new InsertDrillTask(context);
+        task.execute(drill);
+    }
+
+    public static void getDrillsForDanceId(Context context, long danceId, final DanceConsumer<List<Drill>> consumer) {
+        class GetDrillTask extends MyAsyncTask<Long, Void, List<Drill>> {
+
+            private GetDrillTask(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected List<Drill> doInBackground(Long... longs) {
+                if(longs == null || longs[0] == null) {
+                    consumer.setError(ERROR_NULL_VALUE_PASSED);
+                    return null;
+                }
+
+                DanceSQLHelper sql = new DanceSQLHelper(getContext());
+                SQLiteDatabase db = sql.getReadableDatabase();
+
+                List<Drill> retList = new LinkedList<>();
+
+                String[] projection = DrillContract.getFullProjection();
+                String selection = DrillContract.DANCE_ID + " = ?";
+                String[] selectionArgs = {Long.toString(longs[0])};
+                String sortOrder = DrillContract.COLUMN_NAME_DRILL + " ASC";
+
+                Cursor cursor = db.query(DrillContract.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+
+                while(cursor.moveToNext()) {
+                    Drill drill = extractDrillFromCursor(cursor);
+                    retList.add(drill);
+                }
+
+                cursor.close();
+                db.close();
+
+                return retList;
+            }
+
+            @Override
+            protected void onPostExecute(List<Drill> drills) {
+                consumer.consume(drills);
+            }
+        }
+        GetDrillTask task = new GetDrillTask(context);
+        task.execute(danceId);
+
+    }
+
+    private static Drill extractDrillFromCursor(Cursor cursor) {
+        long drillId = cursor.getLong(cursor.getColumnIndexOrThrow(DrillContract._ID));
+        String drillName = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_NAME));
+        long danceId = cursor.getLong(cursor.getColumnIndexOrThrow(DrillContract.DANCE_ID));
+        String danceName = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.DANCE_NAME));
+        String drillText = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DRILL));
+        int date = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DATE_CREATED));
+        int importance = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_IMPORTANCE));
+        int count = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_COUNT));
+        String tags = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_TAGS));
+        boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_STARRED)) == 1;
+        int duration = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DURATION));
+        Drill drill = new Drill(drillId, drillName, danceId, danceName, date, drillText, importance, duration);
+        drill.setTagListFromTagListString(tags);
+        drill.setStarred(starred);
+        drill.setCount(count);
+        return drill;
+    }
+
+    public static void getDrillById(Context context, long drillId, final DanceConsumer<Drill> consumer) {
+        class DrillIdTask extends MyAsyncTask<Long, Void, Drill> {
+
+            public DrillIdTask(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected Drill doInBackground(Long... longs) {
+                if(longs == null || longs[0] == null || longs[0] < 1) {
+                    consumer.setError(ERROR_NULL_VALUE_PASSED);
+                    return null;
+                }
+
+                DanceSQLHelper helper = new DanceSQLHelper(getContext());
+                SQLiteDatabase db = helper.getReadableDatabase();
+
+                String[] projection = DrillContract.getFullProjection();
+                String selection = DrillContract._ID + " = ?";
+                String[] selectionArgs = { Long.toString(longs[0])};
+
+                Cursor cursor = db.query(
+                        DrillContract.TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        null
+                );
+
+                Drill drill = null;
+
+                if(cursor.moveToNext()) {
+                    drill = extractDrillFromCursor(cursor);
+                }
+
+                cursor.close();
+                db.close();
+                return drill;
+            }
+
+            @Override
+            protected void onPostExecute(Drill drill) {
+                consumer.consume(drill);
+            }
+        }
+        DrillIdTask task = new DrillIdTask(context);
+        task.execute(drillId);
+    }
+
 
 }

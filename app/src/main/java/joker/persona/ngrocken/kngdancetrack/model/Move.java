@@ -6,6 +6,12 @@ import java.util.List;
 
 public class Move extends DanceConcept {
 
+    public Move(String name, long danceId, String danceName, String description) {
+        super(0, name, danceId, danceName, new Date());
+        this.description = description;
+    }
+
+
     public Move(long id, String name, long danceId, String danceName, Date dateCreated, String description) {
         super(id, name, danceId, danceName, dateCreated);
         this.description = description;

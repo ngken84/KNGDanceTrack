@@ -8,6 +8,12 @@ public class Dance extends DanceObject {
     private String category;
     private String description;
 
+    public Dance(String name, String category, String description) {
+        super(0, name, new Date());
+        this.category = category;
+        this.description = description;
+    }
+
     public Dance(long id, String name, String category, String description, Date dateCreated) {
         super(id, name, dateCreated);
         this.category = category;

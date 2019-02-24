@@ -180,6 +180,33 @@ public class DanceDBTasks extends TaskTemplate{
         task.execute(id);
     }
 
+    public static void clearDanceTable(Context context, final DanceConsumer<Void> consumer) {
+        class ClearDanceTask extends MyAsyncTask<Void, Void, Void> {
+
+            private ClearDanceTask(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DanceSQLHelper helper = new DanceSQLHelper(getContext());
+                SQLiteDatabase db =  helper.getWritableDatabase();
+
+                db.execSQL("DELETE FROM " + DanceContract.TABLE_NAME);
+
+                db.close();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                consumer.consume(aVoid);
+            }
+        }
+        ClearDanceTask task = new ClearDanceTask(context);
+        task.execute();
+    }
+
     public static void getCategories(Context context, final DanceConsumer<List<String>> consumer) {
         class GetCategoriesAsync extends MyAsyncTask<Void, Void, List<String>> {
 
@@ -232,24 +259,30 @@ public class DanceDBTasks extends TaskTemplate{
                 super(context);
             }
 
+
             @Override
             protected Long doInBackground(Category... categories) {
-                DanceSQLHelper helper = new DanceSQLHelper(getContext());
-                SQLiteDatabase db = helper.getWritableDatabase();
-
+                if(categories == null || categories[0] == null) {
+                    consumer.setError(ERROR_NULL_VALUE_PASSED);
+                    return 0L;
+                }
                 long rowId = 0;
                 Category category = categories[0];
 
-                if(category == null) {
-                    consumer.setError("No category submitted");
-                    db.close();
+                if(category.getName() == null || category.getName().trim().length() == 0) {
+                    consumer.setError(ERROR_NULL_NAME_VALUE_PASSED);
                     return 0L;
                 }
+
+                category.setName(category.getName().trim());
+
                 if("No Category".equals(category.getName())) {
                     consumer.setError("Category must not be named \"No Category\"");
-                    db.close();
                     return 0L;
                 }
+
+                DanceSQLHelper helper = new DanceSQLHelper(getContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
 
                 String[] projection = {
                         CategoryContract._ID,
@@ -278,10 +311,12 @@ public class DanceDBTasks extends TaskTemplate{
                 cv.put(CategoryContract.COLUMN_NAME_NAME, category.getName());
                 cv.put(CategoryContract.COLUMN_NAME_DESCRIPTION, category.getDescription());
                 rowId = db.insert(CategoryContract.TABLE_NAME, null, cv);
-                db.close();
 
+                db.close();
                 return rowId;
+
             }
+
 
             @Override
             protected void onPostExecute(Long aLong) {
@@ -295,7 +330,7 @@ public class DanceDBTasks extends TaskTemplate{
     public static void insertTag(Context context, final DanceConsumer<Long> consumer, Tag tag) {
         class InsertTagTask extends MyAsyncTask<Tag, Void, Long> {
 
-            public InsertTagTask(Context context) {
+            private InsertTagTask(Context context) {
                 super(context);
             }
 

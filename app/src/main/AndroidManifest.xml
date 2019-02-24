@@ -21,6 +21,7 @@
         <activity android:name=".danceview.CreateMoveActivity"></activity>
         <activity android:name=".danceview.CreateDanceActivity"></activity>
         <activity android:name=".danceview.IndividualDanceActivity"></activity>
+        <activity android:name=".danceview.CreateDrillActivity"></activity>
     </application>
 
 </manifest>
