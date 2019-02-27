@@ -20,6 +20,18 @@ public class DanceDBTasks extends TaskTemplate{
 
     private DanceDBTasks() {}
 
+    private static Dance extractDanceFromCursor(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(DanceContract._ID));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_NAME));
+        String category = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_CATEGORY));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DESCRIPTION));
+        long date = cursor.getLong(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DATE_CREATED));
+        boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_STARRED)) == 1;
+        Dance dance = new Dance(id, name, category, description, date);
+        dance.setStarred(starred);
+        return dance;
+    }
+
     public static void getAllDances(Context context, final DanceConsumer<List<Dance>> danceListConsumer) {
         class DanceListAsyncTask extends MyAsyncTask<Void, Void, List<Dance>> {
 
@@ -46,11 +58,7 @@ public class DanceDBTasks extends TaskTemplate{
 
                 List<Dance> retList = new LinkedList<>();
                 while(cursor.moveToNext()) {
-                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(DanceContract._ID));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_NAME));
-                    String category = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_CATEGORY));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DESCRIPTION));
-                    Dance dance = new Dance(id, name, category, description,  0);
+                    Dance dance = extractDanceFromCursor(cursor);
                     retList.add(dance);
                 }
                 cursor.close();
@@ -115,7 +123,7 @@ public class DanceDBTasks extends TaskTemplate{
                     values.put(DanceContract.COLUMN_NAME_DESCRIPTION, dance.getDescription());
                     values.put(DanceContract.COLUMN_NAME_STARRED, 0);
                     values.put(DanceContract.COLUMN_NAME_TAGS, "");
-                    values.put(DanceContract.COLUMN_NAME_DATE_CREATED, dance.getIntDateCreated());
+                    values.put(DanceContract.COLUMN_NAME_DATE_CREATED, dance.getLongDateCreated());
                     rowId = db.insert(DanceContract.TABLE_NAME, null, values);
                     cursor.close();
                 }
@@ -157,14 +165,7 @@ public class DanceDBTasks extends TaskTemplate{
                         null);
                 Dance dance = null;
                 if(cursor.moveToNext()) {
-                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(DanceContract._ID));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_NAME));
-                    String category = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_CATEGORY));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DESCRIPTION));
-                    int date = cursor.getInt(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_DATE_CREATED));
-                    boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceContract.COLUMN_NAME_STARRED)) == 1;
-                    dance = new Dance(id, name, category, description, date);
-                    dance.setStarred(starred);
+                    dance = extractDanceFromCursor(cursor);
                 }
                 cursor.close();
                 db.close();
@@ -206,6 +207,10 @@ public class DanceDBTasks extends TaskTemplate{
         ClearDanceTask task = new ClearDanceTask(context);
         task.execute();
     }
+
+    //**
+    // CATEGORIES
+    //**
 
     public static void getCategories(Context context, final DanceConsumer<List<String>> consumer) {
         class GetCategoriesAsync extends MyAsyncTask<Void, Void, List<String>> {

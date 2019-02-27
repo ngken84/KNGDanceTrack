@@ -24,12 +24,12 @@ public class Move extends DanceConcept {
         this.difficulty = difficulty;
     }
 
-    public Move(long id, String name, long danceId, String danceName, int dateCreated, String description) {
+    public Move(long id, String name, long danceId, String danceName, long dateCreated, String description) {
         super(id, name, danceId, danceName, dateCreated);
         this.description = description;
     }
 
-    public Move(long id, String name, long danceId, String danceName, int dateCreated, String description, int rating, int difficulty) {
+    public Move(long id, String name, long danceId, String danceName, long dateCreated, String description, int rating, int difficulty) {
         super(id, name, danceId, danceName, dateCreated);
         this.description = description;
         this.rating = rating;

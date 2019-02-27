@@ -21,7 +21,7 @@ public abstract class DanceConcept extends DanceObject{
         this.danceName = danceName;
     }
 
-    public DanceConcept(long id, String name, long dance, String danceName, int dateCreated) {
+    public DanceConcept(long id, String name, long dance, String danceName, long dateCreated) {
         super(id, name, dateCreated);
         this.danceId = dance;
         this.danceName = danceName;

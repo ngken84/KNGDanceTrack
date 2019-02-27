@@ -3,9 +3,7 @@ package joker.persona.ngrocken.kngdancetrack.danceview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.util.Consumer;
-import android.widget.Button;
-import android.widget.Toast;
+
 
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.danceview.fragments.IndividualDanceViewFragment;

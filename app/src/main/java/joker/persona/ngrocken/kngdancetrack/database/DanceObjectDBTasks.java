@@ -106,7 +106,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 values.put(DanceMoveContract.DANCE_NAME, move.getDanceName());
                 values.put(DanceMoveContract.COLUMN_NAME_DIFFICULTY, move.getDifficulty());
                 values.put(DanceMoveContract.COLUMN_NAME_STARRED, move.isStarred()? 1 : 0);
-                values.put(DanceMoveContract.COLUMN_NAME_DATE_CREATED, move.getIntDateCreated());
+                values.put(DanceMoveContract.COLUMN_NAME_DATE_CREATED, move.getLongDateCreated());
                 values.put(DanceMoveContract.COLUMN_NAME_TAGS, "");
 
                 long rowId = db.insert(DanceMoveContract.TABLE_NAME, null, values);
@@ -186,7 +186,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
         boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_STARRED)) == 1;
         int rating = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_RATING));
         int difficult = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DIFFICULTY));
-        int dateCreated = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DATE_CREATED));
+        long dateCreated = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DATE_CREATED));
 
         Move move = new Move(id, name, danceId, danceName, dateCreated, description, rating, difficult);
         move.setStarred(starred);
@@ -297,7 +297,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 values.put(DrillContract.DANCE_ID, drill.getDanceId());
                 values.put(DrillContract.DANCE_NAME, drill.getDanceName());
                 values.put(DrillContract.COLUMN_NAME_DRILL, drill.getDrill());
-                values.put(DrillContract.COLUMN_NAME_DATE_CREATED, drill.getIntDateCreated());
+                values.put(DrillContract.COLUMN_NAME_DATE_CREATED, drill.getLongDateCreated());
                 values.put(DrillContract.COLUMN_NAME_STARRED, false);
                 values.put(DrillContract.COLUMN_NAME_IMPORTANCE, drill.getImportance());
                 values.put(DrillContract.COLUMN_NAME_DURATION, drill.getDuration());
@@ -382,7 +382,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
         long danceId = cursor.getLong(cursor.getColumnIndexOrThrow(DrillContract.DANCE_ID));
         String danceName = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.DANCE_NAME));
         String drillText = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DRILL));
-        int date = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DATE_CREATED));
+        long date = cursor.getLong(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DATE_CREATED));
         int importance = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_IMPORTANCE));
         int count = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_COUNT));
         String tags = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_TAGS));

@@ -78,7 +78,6 @@ public class IndividualDanceViewFragment extends Fragment implements View.OnClic
                     Intent intent = new Intent(getContext(), CreateMoveActivity.class);
                     intent.putExtra("danceId", dance.getId());
                     intent.putExtra("danceName", dance.getName());
-                    Toast.makeText(getContext(), "ID " + dance.getId(), Toast.LENGTH_SHORT).show();
                     getActivity().startActivityForResult(intent, CREATE_DANCE_MOVE_RESULT);
                 }
                 break;
@@ -121,7 +120,6 @@ public class IndividualDanceViewFragment extends Fragment implements View.OnClic
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Toast.makeText(getActivity(), "SLDKfj " + i, Toast.LENGTH_SHORT).show();
         DanceConcept concept = mAdapter.getItem(i);
         switch(concept.getConceptType()) {
             case DRILL:

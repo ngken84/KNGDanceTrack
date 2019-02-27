@@ -12,7 +12,7 @@ public class MoveUnitTest {
 
     @Test
     public void constructor_works() {
-        Move move = new Move("1", "Whip", "West Coast Swing", new Date(), "It's a Whip");
+        Move move = new Move("Whip", 1, "West Coast Swing", "It's a Whip");
         assertEquals(move.getDescription(), "It's a Whip");
         assertEquals(move.getId(), "1");
         assertEquals(move.getName(), "Whip");

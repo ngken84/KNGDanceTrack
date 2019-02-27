@@ -20,7 +20,7 @@ public class Drill extends DanceConcept {
         this.drill = drill;
     }
 
-    public Drill(long id, String name, long danceId, String danceName, int dateCreated, String drill, int importance, int duration) {
+    public Drill(long id, String name, long danceId, String danceName, long dateCreated, String drill, int importance, int duration) {
         super(id, name, danceId, danceName, dateCreated);
         this.importance = importance;
         this.count = 0;
