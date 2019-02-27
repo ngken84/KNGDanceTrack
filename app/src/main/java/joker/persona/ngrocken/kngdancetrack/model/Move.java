@@ -57,6 +57,10 @@ public class Move extends DanceConcept {
         return difficulty;
     }
 
+    @Override
+    public ConceptType getConceptType() {
+        return ConceptType.MOVE;
+    }
 }
 
 

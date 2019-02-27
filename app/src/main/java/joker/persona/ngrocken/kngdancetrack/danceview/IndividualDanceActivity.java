@@ -12,6 +12,7 @@ import joker.persona.ngrocken.kngdancetrack.danceview.fragments.IndividualDanceV
 import joker.persona.ngrocken.kngdancetrack.database.DanceDBTasks;
 import joker.persona.ngrocken.kngdancetrack.database.DanceObjectDBTasks;
 import joker.persona.ngrocken.kngdancetrack.model.Dance;
+import joker.persona.ngrocken.kngdancetrack.model.Drill;
 import joker.persona.ngrocken.kngdancetrack.model.Move;
 import joker.persona.ngrocken.kngdancetrack.util.ActivityTemplate;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
@@ -49,6 +50,9 @@ public class IndividualDanceActivity extends ActivityTemplate {
             case IndividualDanceViewFragment.CREATE_DANCE_MOVE_RESULT:
                 handleCreateDanceMoveResult(resultCode, data);
                 break;
+            case IndividualDanceViewFragment.CREATE_DRILL_RESULT:
+                handleCreateDrillResult(resultCode, data);
+                break;
 
         }
     }
@@ -70,6 +74,27 @@ public class IndividualDanceActivity extends ActivityTemplate {
                         }
                     });
                 }
+
+        }
+    }
+
+    private void handleCreateDrillResult(int resultCode, Intent data) {
+        if(resultCode == RESULT_OK && data != null) {
+            long id = data.getLongExtra("id", 0);
+            if(id != 0) {
+                DanceObjectDBTasks.getDrillById(this, id, new DanceConsumer<Drill>() {
+                    @Override
+                    public void consume(Drill drill) {
+                        indFragment.addDrill(drill);
+                    }
+
+                    @Override
+                    public void handleError() {
+
+                    }
+                });
+            }
+
 
         }
     }

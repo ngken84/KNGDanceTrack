@@ -50,4 +50,9 @@ public class Drill extends DanceConcept {
     public int getDuration() {
         return duration;
     }
+
+    @Override
+    public ConceptType getConceptType() {
+        return ConceptType.DRILL;
+    }
 }

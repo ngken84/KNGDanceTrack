@@ -6,6 +6,11 @@ import java.util.List;
 
 public abstract class DanceConcept extends DanceObject{
 
+
+    public enum ConceptType {
+        DRILL, MOVE, SKILL
+    }
+
     private long danceId;
     private String danceName;
     private List<String> tagList = new LinkedList<>();
@@ -66,6 +71,8 @@ public abstract class DanceConcept extends DanceObject{
             addTag(tag);
         }
     }
+
+    public abstract ConceptType getConceptType();
 
 
 }

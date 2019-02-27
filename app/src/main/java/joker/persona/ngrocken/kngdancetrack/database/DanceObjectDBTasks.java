@@ -11,6 +11,7 @@ import java.util.List;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceMoveContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DrillContract;
 import joker.persona.ngrocken.kngdancetrack.database.helpers.DanceSQLHelper;
+import joker.persona.ngrocken.kngdancetrack.model.DanceConcept;
 import joker.persona.ngrocken.kngdancetrack.model.Drill;
 import joker.persona.ngrocken.kngdancetrack.model.Move;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
@@ -19,6 +20,41 @@ public class DanceObjectDBTasks extends TaskTemplate {
 
     private DanceObjectDBTasks() {}
 
+
+    public static void getAllDanceConceptsForDance(Context context, long danceId, final DanceConsumer<List<DanceConcept>> consumer) {
+        class GetAllDanceConcForDance extends MyAsyncTask<Long, Void, List<DanceConcept>> {
+
+            private GetAllDanceConcForDance(Context context) {
+                super(context);
+            }
+
+            @Override
+            protected List<DanceConcept> doInBackground(Long... longs) {
+                DanceSQLHelper helper = new DanceSQLHelper(getContext());
+                SQLiteDatabase db = helper.getReadableDatabase();
+
+                if(longs == null || longs[0] == null || longs[0] < 1) {
+                    consumer.setError(ERROR_NULL_VALUE_PASSED);
+                    return null;
+                }
+
+                List<DanceConcept> retList = new LinkedList<>();
+                retList.addAll(getAllMovesFromDB(db, longs[0]));
+
+                retList.addAll(getAllDrillsFromDB(db, longs[0]));
+
+                return retList;
+            }
+
+            @Override
+            protected void onPostExecute(List<DanceConcept> danceConcepts) {
+                consumer.consume(danceConcepts);
+            }
+        }
+
+        GetAllDanceConcForDance task = new GetAllDanceConcForDance(context);
+        task.execute(danceId);
+    }
 
     //DANCE MOVES
     public static void insertDanceMove(Context context, Move move, final DanceConsumer<Long> consumer) {
@@ -100,41 +136,8 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 DanceSQLHelper helper = new DanceSQLHelper(getContext());
                 SQLiteDatabase db = helper.getReadableDatabase();
 
-                String selection = DanceMoveContract.DANCE_ID + " = ?";
-                String[] selectionArgs = {Long.toString(longs[0])};
+                List<Move> retList = getAllMovesFromDB(db, longs[0]);
 
-                String sortOrder = DanceMoveContract.COLUMN_NAME_NAME + " ASC";
-
-                Cursor cursor = db.query(DanceMoveContract.TABLE_NAME,
-                        DanceMoveContract.getFullProjection(),
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-
-                List<Move> retList = new LinkedList<>();
-
-                while(cursor.moveToNext()) {
-                    long id = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract._ID));
-                    long danceId = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_ID));
-                    String danceName = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_NAME));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_NAME));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DESCRIPTION));
-                    String tags = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_TAGS));
-                    boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_STARRED)) == 1;
-                    int rating = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_RATING));
-                    int difficult = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DIFFICULTY));
-                    int dateCreated = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DATE_CREATED));
-
-                    Move move = new Move(id, name, danceId, danceName, dateCreated, description, rating, difficult);
-                    move.setStarred(starred);
-                    move.setTagListFromTagListString(tags);
-
-                    retList.add(move);
-                }
-
-                cursor.close();
                 db.close();
 
                 return retList;
@@ -147,6 +150,49 @@ public class DanceObjectDBTasks extends TaskTemplate {
         }
         GetDanceMove task = new GetDanceMove(context);
         task.execute(danceId);
+    }
+
+    private static List<Move> getAllMovesFromDB(SQLiteDatabase db, long danceId) {
+        String selection = DanceMoveContract.DANCE_ID + " = ?";
+        String[] selectionArgs = {Long.toString(danceId)};
+
+        String sortOrder = DanceMoveContract.COLUMN_NAME_NAME + " ASC";
+
+        Cursor cursor = db.query(DanceMoveContract.TABLE_NAME,
+                DanceMoveContract.getFullProjection(),
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder);
+
+        List<Move> retList = new LinkedList<>();
+
+        while(cursor.moveToNext()) {
+            Move move = extractDanceMoveFromCursor(cursor);
+            retList.add(move);
+        }
+        cursor.close();
+        return retList;
+    }
+
+    private static Move extractDanceMoveFromCursor(Cursor cursor) {
+        long id = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract._ID));
+        long danceId = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_ID));
+        String danceName = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_NAME));
+        String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_NAME));
+        String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DESCRIPTION));
+        String tags = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_TAGS));
+        boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_STARRED)) == 1;
+        int rating = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_RATING));
+        int difficult = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DIFFICULTY));
+        int dateCreated = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DATE_CREATED));
+
+        Move move = new Move(id, name, danceId, danceName, dateCreated, description, rating, difficult);
+        move.setStarred(starred);
+        move.setTagListFromTagListString(tags);
+
+        return move;
     }
 
     public static void getDanceMoveById(Context context, long danceMoveId, final DanceConsumer<Move> consumer) {
@@ -183,19 +229,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 Move move = null;
 
                 if(cursor.moveToNext()) {
-                    long danceId = cursor.getLong(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_ID));
-                    String danceName = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.DANCE_NAME));
-                    String name = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_NAME));
-                    String description = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DESCRIPTION));
-                    String tags = cursor.getString(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_TAGS));
-                    boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_STARRED)) == 1;
-                    int rating = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_RATING));
-                    int difficult = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DIFFICULTY));
-                    int dateCreated = cursor.getInt(cursor.getColumnIndexOrThrow(DanceMoveContract.COLUMN_NAME_DATE_CREATED));
-
-                    move = new Move(id, name, danceId, danceName, dateCreated, description, rating, difficult);
-                    move.setStarred(starred);
-                    move.setTagListFromTagListString(tags);
+                    move = extractDanceMoveFromCursor(cursor);
                 }
 
                 cursor.close();
@@ -259,7 +293,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 cursor.close();
 
                 ContentValues values = new ContentValues();
-                values.put(DrillContract.COLUMN_NAME_NAME, drill.getDanceName());
+                values.put(DrillContract.COLUMN_NAME_NAME, drill.getName());
                 values.put(DrillContract.DANCE_ID, drill.getDanceId());
                 values.put(DrillContract.DANCE_NAME, drill.getDanceName());
                 values.put(DrillContract.COLUMN_NAME_DRILL, drill.getDrill());
@@ -301,27 +335,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 DanceSQLHelper sql = new DanceSQLHelper(getContext());
                 SQLiteDatabase db = sql.getReadableDatabase();
 
-                List<Drill> retList = new LinkedList<>();
-
-                String[] projection = DrillContract.getFullProjection();
-                String selection = DrillContract.DANCE_ID + " = ?";
-                String[] selectionArgs = {Long.toString(longs[0])};
-                String sortOrder = DrillContract.COLUMN_NAME_DRILL + " ASC";
-
-                Cursor cursor = db.query(DrillContract.TABLE_NAME,
-                        projection,
-                        selection,
-                        selectionArgs,
-                        null,
-                        null,
-                        sortOrder);
-
-                while(cursor.moveToNext()) {
-                    Drill drill = extractDrillFromCursor(cursor);
-                    retList.add(drill);
-                }
-
-                cursor.close();
+                List<Drill> retList = getAllDrillsFromDB(db, longs[0]);
                 db.close();
 
                 return retList;
@@ -335,6 +349,31 @@ public class DanceObjectDBTasks extends TaskTemplate {
         GetDrillTask task = new GetDrillTask(context);
         task.execute(danceId);
 
+    }
+
+    private static List<Drill> getAllDrillsFromDB(SQLiteDatabase db, long danceId) {
+        List<Drill> retList = new LinkedList<>();
+
+        String[] projection = DrillContract.getFullProjection();
+        String selection = DrillContract.DANCE_ID + " = ?";
+        String[] selectionArgs = {Long.toString(danceId)};
+        String sortOrder = DrillContract.COLUMN_NAME_DRILL + " ASC";
+
+        Cursor cursor = db.query(DrillContract.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder);
+
+        while(cursor.moveToNext()) {
+            Drill drill = extractDrillFromCursor(cursor);
+            retList.add(drill);
+        }
+
+        cursor.close();
+        return retList;
     }
 
     private static Drill extractDrillFromCursor(Cursor cursor) {

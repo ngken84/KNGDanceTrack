@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <TextView
+        android:id="@+id/fdv_drill_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="HELLO"/>
+
+
+    <TextView
+        android:id="@+id/fdv_drill_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:layout_below="@id/fdv_drill_name"
+        android:text=""/>
+
+    <Button
+        android:id="@+id/fdv_add_note_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:text="Add Note"/>
+
+    <Button
+        android:id="@+id/fdv_add_schedule_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/fdv_add_note_btn"
+        android:text="Set Schedule"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/fdv_drill_description"
+        android:layout_above="@id/fdv_add_schedule_btn">
+
+    </ListView>
+
+
+    
+</RelativeLayout>

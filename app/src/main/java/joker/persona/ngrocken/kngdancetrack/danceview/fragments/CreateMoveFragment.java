@@ -72,7 +72,8 @@ public class CreateMoveFragment extends Fragment implements View.OnClickListener
         String description = descEdtTxt.getText().toString();
         int rating = rtgBar.getNumStars();
 
-        Move move = new Move(0L, moveName, dance.getId(), dance.getName(), new Date(), "");
+        Move move = new Move(moveName, dance.getId(), dance.getName(), description);
+        move.setRating(rating);
 
         final Fragment fragment = this;
         DanceObjectDBTasks.insertDanceMove(getContext(), move, new DanceConsumer<Long>() {
