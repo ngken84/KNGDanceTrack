@@ -13,6 +13,8 @@ import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
 public class DrillViewActivity extends ActivityTemplate {
 
+    public static final int RESULT_CREATE_NOTE = 20;
+
     DrillViewFragment drillViewFragment;
 
     @Override
@@ -38,6 +40,15 @@ public class DrillViewActivity extends ActivityTemplate {
 
                 }
             });
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(resultCode == RESULT_OK) {
+            switch(resultCode) {
+
+            }
         }
     }
 }

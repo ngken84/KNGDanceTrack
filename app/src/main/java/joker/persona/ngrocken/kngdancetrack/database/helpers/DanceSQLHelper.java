@@ -8,6 +8,7 @@ import joker.persona.ngrocken.kngdancetrack.database.contracts.CategoryContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceMoveContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.DrillContract;
+import joker.persona.ngrocken.kngdancetrack.database.contracts.NoteContract;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.TagContract;
 
 public class DanceSQLHelper extends SQLiteOpenHelper {
@@ -26,6 +27,7 @@ public class DanceSQLHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CategoryContract.getCreateCategoryDatabase());
         sqLiteDatabase.execSQL(TagContract.getCreateDatabaseString());
         sqLiteDatabase.execSQL(DrillContract.getCreateDrillDatabase());
+        sqLiteDatabase.execSQL(NoteContract.getCreateDatabaseString());
 
     }
 
@@ -46,6 +48,8 @@ public class DanceSQLHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(DrillContract.getDeleteDrilLDatabase());
         sqLiteDatabase.execSQL(DrillContract.getCreateDrillDatabase());
 
+        sqLiteDatabase.execSQL(NoteContract.getDeleteDatabaseString());
+        sqLiteDatabase.execSQL(NoteContract.getCreateDatabaseString());
 
     }
 }

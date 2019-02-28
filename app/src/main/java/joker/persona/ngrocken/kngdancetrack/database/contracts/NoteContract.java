@@ -27,7 +27,7 @@ public class NoteContract implements BaseColumns {
                 DATE_CREATED + " INTEGER)";
     }
 
-    public static String createDeleteDatabaseString() {
+    public static String getDeleteDatabaseString() {
         return "DROP TABLE IF EXISTS " + TABLE_NAME;
     }
 

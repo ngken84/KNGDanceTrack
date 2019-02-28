@@ -1,5 +1,6 @@
 package joker.persona.ngrocken.kngdancetrack.danceview.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import joker.persona.ngrocken.kngdancetrack.R;
+import joker.persona.ngrocken.kngdancetrack.danceview.CreateNoteActivity;
+import joker.persona.ngrocken.kngdancetrack.danceview.DrillViewActivity;
 import joker.persona.ngrocken.kngdancetrack.model.Drill;
 
-public class DrillViewFragment extends Fragment {
+public class DrillViewFragment extends Fragment implements View.OnClickListener{
 
     private TextView nameText;
     private TextView descText;
@@ -32,6 +35,8 @@ public class DrillViewFragment extends Fragment {
         descText = view.findViewById(R.id.fdv_drill_description);
 
         addNoteBtn = view.findViewById(R.id.fdv_add_note_btn);
+        addNoteBtn.setOnClickListener(this);
+
         setSchedBtn = view.findViewById(R.id.fdv_add_schedule_btn);
 
         return view;
@@ -41,5 +46,15 @@ public class DrillViewFragment extends Fragment {
         this.drill = drill;
         nameText.setText(drill.getName());
         descText.setText(drill.getDrill());
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.fdv_add_note_btn:
+                Intent intent = new Intent(getActivity(), CreateNoteActivity.class);
+                startActivityForResult(intent, DrillViewActivity.RESULT_CREATE_NOTE);
+                break;
+        }
     }
 }

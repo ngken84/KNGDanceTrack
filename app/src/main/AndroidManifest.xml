@@ -23,6 +23,7 @@
         <activity android:name=".danceview.IndividualDanceActivity"></activity>
         <activity android:name=".danceview.CreateDrillActivity"></activity>
         <activity android:name=".danceview.DrillViewActivity"></activity>
+        <activity android:name=".danceview.CreateNoteActivity"></activity>
     </application>
 
 </manifest>
