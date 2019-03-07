@@ -40,8 +40,9 @@
         android:text="Set Schedule"/>
 
     <ListView
+        android:id="@+id/fdv_drill_lv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_below="@id/fdv_drill_description"
         android:layout_above="@id/fdv_add_schedule_btn">
 
