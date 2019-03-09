@@ -128,6 +128,12 @@ public class IndividualDanceViewFragment extends Fragment implements View.OnClic
                 intent.putExtra("id", drill.getId());
                 startActivity(intent);
                 break;
+            case MOVE:
+                Move move = (Move) concept;
+                Intent intent1 = new Intent(getActivity(), MoveActivity.class);
+                intent1.putExtra("id", move.getId());
+                startActivity(intent1);
+                break;
         }
     }
 }

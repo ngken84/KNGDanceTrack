@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,26 +69,34 @@ public class CreateNoteFragment extends Fragment implements View.OnClickListener
         switch (concept.getConceptType()) {
             case DRILL:
                 DanceNote drillNote = new DanceNote(concept.getId(), NoteContract.NOTE_TYPE_DRILL, note);
-                DanceNoteDBTasks.insertNote(getActivity(), drillNote, new DanceConsumer<Long>() {
-                    @Override
-                    public void consume(Long aLong) {
-                        Intent intent = new Intent();
-                        Log.d("#CREATE_NOTE", "Note created " + aLong);
-                        intent.putExtra("id", aLong);
-                        intent.putExtra("note", note);
-                        getActivity().setResult(Activity.RESULT_OK, intent);
-                        getActivity().finish();
-                    }
-
-                    @Override
-                    public void handleError() {
-
-                    }
-                });
+                insertNote(drillNote);
+                break;
+            case MOVE:
+                DanceNote moveNote = new DanceNote(concept.getId(), NoteContract.NOTE_TYPE_MOVE, note);
+                insertNote(moveNote);
+                break;
 
         }
 
 
+    }
+
+    private void insertNote(final DanceNote dNote) {
+        DanceNoteDBTasks.insertNote(getActivity(), dNote, new DanceConsumer<Long>() {
+            @Override
+            public void consume(Long aLong) {
+                Intent intent = new Intent();
+                intent.putExtra("id", aLong);
+                intent.putExtra("note", dNote.getNote());
+                getActivity().setResult(Activity.RESULT_OK, intent);
+                getActivity().finish();
+            }
+
+            @Override
+            public void handleError() {
+
+            }
+        });
     }
 
 

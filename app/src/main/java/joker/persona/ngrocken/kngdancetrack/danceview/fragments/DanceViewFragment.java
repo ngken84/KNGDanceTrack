@@ -1,27 +1,19 @@
 package joker.persona.ngrocken.kngdancetrack.danceview.fragments;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.util.Consumer;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -29,11 +21,8 @@ import java.util.List;
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.adapters.DanceArrayAdapter;
 import joker.persona.ngrocken.kngdancetrack.danceview.CreateDanceActivity;
-import joker.persona.ngrocken.kngdancetrack.danceview.DanceActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.IndividualDanceActivity;
-import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
 import joker.persona.ngrocken.kngdancetrack.database.DanceDBTasks;
-import joker.persona.ngrocken.kngdancetrack.database.contracts.DanceContract;
 import joker.persona.ngrocken.kngdancetrack.model.Dance;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
@@ -94,7 +83,6 @@ public class DanceViewFragment extends Fragment implements View.OnClickListener,
         Dance dance = mAdapter.getItem(i);
         Intent intent = new Intent(getActivity(), IndividualDanceActivity.class);
         intent.putExtra("danceId", dance.getId());
-        Toast.makeText(getContext(), "ID " + dance.getId(), Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
 

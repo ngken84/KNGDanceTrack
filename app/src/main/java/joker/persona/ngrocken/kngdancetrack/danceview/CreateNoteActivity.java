@@ -8,8 +8,10 @@ import android.util.Log;
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.danceview.fragments.CreateNoteFragment;
 import joker.persona.ngrocken.kngdancetrack.database.DanceObjectDBTasks;
+import joker.persona.ngrocken.kngdancetrack.database.contracts.NoteContract;
 import joker.persona.ngrocken.kngdancetrack.model.DanceConcept;
 import joker.persona.ngrocken.kngdancetrack.model.Drill;
+import joker.persona.ngrocken.kngdancetrack.model.Move;
 import joker.persona.ngrocken.kngdancetrack.util.ActivityTemplate;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
 
@@ -39,11 +41,10 @@ public class CreateNoteActivity extends ActivityTemplate {
         }
 
         switch(type) {
-            case "drill":
+            case NoteContract.NOTE_TYPE_DRILL:
                 DanceObjectDBTasks.getDrillById(this, id, new DanceConsumer<Drill>() {
                     @Override
                     public void consume(Drill drill) {
-                        Log.d("#DRILL", drill.getName());
                         setConcept(drill);
                     }
 
@@ -54,9 +55,21 @@ public class CreateNoteActivity extends ActivityTemplate {
                     }
                 });
                 break;
+            case NoteContract.NOTE_TYPE_MOVE:
+                DanceObjectDBTasks.getDanceMoveById(this, id, new DanceConsumer<Move>() {
+                    @Override
+                    public void consume(Move move) {
+                        setConcept(move);
+                    }
+
+                    @Override
+                    public void handleError() {
+                        setResult(RESULT_CANCELED);
+                        finish();
+                    }
+                });
+                break;
         }
-
-
     }
 
     public void setConcept(DanceConcept concept) {
