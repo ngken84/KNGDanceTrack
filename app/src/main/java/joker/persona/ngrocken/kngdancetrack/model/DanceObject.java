@@ -1,6 +1,7 @@
 package joker.persona.ngrocken.kngdancetrack.model;
 
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 
 public abstract class DanceObject {
@@ -63,5 +64,14 @@ public abstract class DanceObject {
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
+    }
+
+    public static class  DanceDateCreatedComparator implements Comparator<DanceObject> {
+
+        @Override
+        public int compare(DanceObject t1, DanceObject t2) {
+            return t2.getDateCreated().compareTo(t1.getDateCreated());
+        }
+
     }
 }

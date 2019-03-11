@@ -11,6 +11,7 @@ public class DrillContract implements BaseColumns {
     public static final String COLUMN_NAME_NAME = "name";
     public static final String COLUMN_NAME_DRILL = "drill";
     public static final String COLUMN_NAME_DURATION = "duration";
+    public static final String COLUMN_NAME_DURATION_TYPE = "duration_type";
     public static final String COLUMN_NAME_TAGS = "tags";
     public static final String COLUMN_NAME_DATE_CREATED = "date_created";
     public static final String COLUMN_NAME_STARRED = "stars";
@@ -27,6 +28,7 @@ public class DrillContract implements BaseColumns {
                 COLUMN_NAME_DRILL,
                 COLUMN_NAME_TAGS,
                 COLUMN_NAME_DURATION,
+                COLUMN_NAME_DURATION_TYPE,
                 COLUMN_NAME_DATE_CREATED,
                 COLUMN_NAME_STARRED,
                 COLUMN_NAME_IMPORTANCE,
@@ -44,6 +46,7 @@ public class DrillContract implements BaseColumns {
                 COLUMN_NAME_NAME + " TEXT NOT NULL, " +
                 COLUMN_NAME_DRILL + " TEXT, " +
                 COLUMN_NAME_DURATION + " INTEGER, " +
+                COLUMN_NAME_DURATION_TYPE + " TEXT, " +
                 COLUMN_NAME_TAGS + " TEXT NOT NULL, " +
                 COLUMN_NAME_DATE_CREATED + " INT, " +
                 COLUMN_NAME_IMPORTANCE + " INT, " +

@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.database.DanceObjectDBTasks;
@@ -24,8 +26,11 @@ public class CreateDrillFragment extends Fragment implements View.OnClickListene
     private EditText nameEdit;
     private EditText descEdit;
     private EditText durationEdit;
+    private Spinner durTypeSpinner;
     private RatingBar ratingBar;;
     private Button createDrillBtn;
+
+    ArrayAdapter<String> mAdapter;
 
     private Dance dance = null;
 
@@ -38,6 +43,11 @@ public class CreateDrillFragment extends Fragment implements View.OnClickListene
         descEdit = view.findViewById(R.id.fcdl_drilldesc_edit);
         ratingBar = view.findViewById(R.id.fcdl_importance);
         durationEdit = view.findViewById(R.id.fcdl_drill_duration);
+        durTypeSpinner = view.findViewById(R.id.fcdl_duration_type_spinner);
+
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, android.R.id.text1);
+        durTypeSpinner.setAdapter(mAdapter);
+        mAdapter.addAll("minutes", "repetitions");
 
         createDrillBtn = view.findViewById(R.id.fcdl_createdrill_btn);
         createDrillBtn.setOnClickListener(this);
@@ -90,12 +100,13 @@ public class CreateDrillFragment extends Fragment implements View.OnClickListene
             }
         }
 
+        String durationType = durTypeSpinner.getSelectedItem().toString();
 
         if(hasError) {
             return;
         }
 
-        Drill drill = new Drill(name, dance.getId(), dance.getName(), description, importance, duration);
+        Drill drill = new Drill(name, dance.getId(), dance.getName(), description, importance, duration, durationType);
 
         DanceObjectDBTasks.insertDrill(getActivity(), drill, new DanceConsumer<Long>() {
             @Override

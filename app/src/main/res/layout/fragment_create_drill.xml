@@ -49,11 +49,11 @@
             android:layout_width="131dp"
             android:layout_height="wrap_content" />
 
-        <TextView
+        <Spinner
+            android:id="@+id/fcdl_duration_type_spinner"
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="minutes"/>
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

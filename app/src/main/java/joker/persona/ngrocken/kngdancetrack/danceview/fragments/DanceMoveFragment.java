@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +16,14 @@ import java.util.List;
 
 import joker.persona.ngrocken.kngdancetrack.R;
 import joker.persona.ngrocken.kngdancetrack.adapters.DanceNoteAdapter;
-import joker.persona.ngrocken.kngdancetrack.danceview.CreateMoveActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.CreateNoteActivity;
 import joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity;
 import joker.persona.ngrocken.kngdancetrack.database.DanceNoteDBTasks;
 import joker.persona.ngrocken.kngdancetrack.database.contracts.NoteContract;
 import joker.persona.ngrocken.kngdancetrack.model.DanceNote;
+import joker.persona.ngrocken.kngdancetrack.model.DanceObject;
 import joker.persona.ngrocken.kngdancetrack.model.Move;
 import joker.persona.ngrocken.kngdancetrack.util.DanceConsumer;
-
-import static joker.persona.ngrocken.kngdancetrack.danceview.MoveActivity.*;
 
 public class DanceMoveFragment extends Fragment implements View.OnClickListener {
 
@@ -47,8 +44,7 @@ public class DanceMoveFragment extends Fragment implements View.OnClickListener 
         moveText = view.findViewById(R.id.fdm_move_text);
 
         listView = view.findViewById(R.id.fdm_listview);
-
-
+        
         addNoteBtn = view.findViewById(R.id.fdm_addNote);
 
         return view;
@@ -90,5 +86,7 @@ public class DanceMoveFragment extends Fragment implements View.OnClickListener 
 
     public void addNote(DanceNote note) {
         mAdapter.add(note);
+        mAdapter.sort(new DanceObject.DanceDateCreatedComparator());
+        mAdapter.notifyDataSetChanged();
     }
 }

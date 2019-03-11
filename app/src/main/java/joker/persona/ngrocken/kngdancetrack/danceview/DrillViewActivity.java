@@ -3,6 +3,7 @@ package joker.persona.ngrocken.kngdancetrack.danceview;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Date;
 

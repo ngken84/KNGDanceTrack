@@ -301,6 +301,7 @@ public class DanceObjectDBTasks extends TaskTemplate {
                 values.put(DrillContract.COLUMN_NAME_STARRED, false);
                 values.put(DrillContract.COLUMN_NAME_IMPORTANCE, drill.getImportance());
                 values.put(DrillContract.COLUMN_NAME_DURATION, drill.getDuration());
+                values.put(DrillContract.COLUMN_NAME_DURATION_TYPE, drill.getDurationType());
                 values.put(DrillContract.COLUMN_NAME_TAGS, "");
                 values.put(DrillContract.COLUMN_NAME_COUNT, 0);
 
@@ -388,7 +389,8 @@ public class DanceObjectDBTasks extends TaskTemplate {
         String tags = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_TAGS));
         boolean starred = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_STARRED)) == 1;
         int duration = cursor.getInt(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DURATION));
-        Drill drill = new Drill(drillId, drillName, danceId, danceName, date, drillText, importance, duration);
+        String durationType = cursor.getString(cursor.getColumnIndexOrThrow(DrillContract.COLUMN_NAME_DURATION_TYPE));
+        Drill drill = new Drill(drillId, drillName, danceId, danceName, date, drillText, importance, duration, durationType);
         drill.setTagListFromTagListString(tags);
         drill.setStarred(starred);
         drill.setCount(count);
